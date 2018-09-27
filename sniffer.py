@@ -2,6 +2,15 @@
 import socket
 import struct
 
+'''
+IP Protocol ID's
+1 ICMP  50 ESP
+2 IGMP  51 AH
+6 TCP   57 SKIP
+9 IGRP  88 EIGRP
+17 UDP  89 OSPF
+47 GRE  115 L2TP
+'''
 
 def main():
     connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux
