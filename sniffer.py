@@ -43,4 +43,9 @@ def ip_packet(data):
 def ipv4(raw_addr):
     return '.'.join(map(str, raw_addr))
 
+# Extract ICMP (ping) packet
+def icmp_packet(data):
+    icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header)
+    return icmp_type, code, checksum, data[4:]  # Add data, everything after 4th byte
+
 main()
