@@ -1,9 +1,6 @@
 # Network Engineering 2
-
 For the NE2 course we we're given the assignment to build a Network Intrusion Detection System (IDS) from scratch in Python.
-
 ## Requirements
-
 ### Detector running on Windows, Mac, Linux or Rpi:
 
 * That captures network packets from a WIFI-network or a ethernet-network (it is
