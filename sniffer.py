@@ -15,7 +15,7 @@ IP Protocol ID's
 def main():
     connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux
     while True:
-        raw, addr = connection.recvfrom(65536)  # Store to maximum buffer
+        raw, addr = connection.recvfrom(65536)  # Store to maximum buffer (65536)
         destination, source, protocol, data = eth_frame(raw)
         print('\nEthernet Frame:')
         print('Destination: {}, Source: {}, Protocol: {}'.format(destination, source, protocol, data)) # Fill placeholders {} with data
@@ -45,7 +45,7 @@ def ipv4(raw_addr):
 
 # Extract ICMP (ping) packet
 def icmp_packet(data):
-    icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header)
+    icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header) of the ICMP packet
     return icmp_type, code, checksum, data[4:]  # Add data, everything after 4th byte
 
 # Extract TCP segment based on the TCP IP packet diagram
