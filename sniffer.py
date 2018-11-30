@@ -21,6 +21,19 @@ def main():
         print('\nEthernet Frame:')
         print('Destination: {}, Source: {}, Protocol: {}'.format(destination, source, protocol, data)) # Fill placeholders {} with data
 
+        if protocol == 8:    # If protocol is IPv4
+            (version, IHL, ttl, protocol, source, target, data) = ip_packet(data)
+            print('IPv4 Packet:')
+            print('Version: {}, Header Length: {}, TTL: {}'.format(version, IHL, ttl))
+            print('Protocol: {}, Source: {}, Target: {}'.format(protocol, source, target))
+
+            if protocol == 1:
+                icmp_type, code, checksum, data = icmp_packet(data)
+                print('ICMP Packet:')
+                print('Type: {}, Code: {}, Checksum: {}'.format(icmp_type, code, checksum))
+                print('Data:')
+                print(format_multi_line(data))
+
 #  Extract data from frame
 def eth_frame(data):
     destination, source, protocol = struct.unpack('! 6s 6s H', data[:14])  # First 14 bytes from IP-packet. Source & Destination = 6, protocol is 2 bytes.
@@ -66,6 +79,7 @@ def tcp_segment(data):
     flag_syn = (offset_reserved_flags & 2) >> 1
     flag_fin = offset_reserved_flags & 1
     return src_port, dest_port, sequence, acknowledgement, offset_reserved_flags, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:]
+
 
 # Format multi line output
 def format_multi_line(prefix, string, size=80):
