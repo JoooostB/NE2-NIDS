@@ -1,6 +1,7 @@
 #!/usr/bin/sudo python
 import socket
 import struct
+import textwrap
 
 '''
 IP Protocol ID's
@@ -65,4 +66,14 @@ def tcp_segment(data):
     flag_syn = (offset_reserved_flags & 2) >> 1
     flag_fin = offset_reserved_flags & 1
     return src_port, dest_port, sequence, acknowledgement, offset_reserved_flags, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:]
+
+# Format multi line output
+def format_multi_line(prefix, string, size=80):
+    size -= len(prefix)
+    if isinstance(string, bytes):
+        string = ''.join(r'\x{:02x}'.format(byte) for byte in string)
+        if size % 2:
+            size -= 1
+    return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
+
 main()
