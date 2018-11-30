@@ -43,6 +43,11 @@ def ip_packet(data):
 def ipv4(raw_addr):
     return '.'.join(map(str, raw_addr))
 
+# Extract UDP packet
+def udp_segment(data):
+    src_port, dest_port, size = struct.unpack('! H H 2x H', data[:8]) # grab first 8 bytes (header) of the UDP packet
+    return src_port, dest_port, size, data[8:]
+
 # Extract ICMP (ping) packet
 def icmp_packet(data):
     icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header) of the ICMP packet
