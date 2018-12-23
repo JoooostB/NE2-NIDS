@@ -14,7 +14,7 @@ IP Protocol ID's
 '''
 
 def main():
-    connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux
+    connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux and vise versa
     while True:
         raw, addr = connection.recvfrom(65536)  # Store to maximum buffer (65536)
         destination, source, protocol, data = eth_frame(raw)
