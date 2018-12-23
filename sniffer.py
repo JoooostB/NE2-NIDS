@@ -19,20 +19,20 @@ def main():
         raw, addr = connection.recvfrom(65536)  # Store to maximum buffer (65536)
         destination, source, protocol, data = eth_frame(raw)
         print('\nEthernet Frame:')
-        print('Destination: {}, Source: {}, Protocol: {}'.format(destination, source, protocol, data)) # Fill placeholders {} with data
+        print('\t - Destination: {}, Source: {}, Protocol: {}'.format(destination, source, protocol, data)) # Fill placeholders {} with data
 
         if protocol == 8:    # If protocol is IPv4
             (version, IHL, ttl, protocol, source, target, data) = ip_packet(data)
             print('IPv4 Packet:')
-            print('Version: {}, Header Length: {}, TTL: {}'.format(version, IHL, ttl))
-            print('Protocol: {}, Source: {}, Target: {}'.format(protocol, source, target))
+            print('\t\t - Version: {}, Header Length: {}, TTL: {}'.format(version, IHL, ttl))
+            print('\t\t - Protocol: {}, Source: {}, Target: {}'.format(protocol, source, target))
 
             if protocol == 1:
                 icmp_type, code, checksum, data = icmp_packet(data)
-                print('ICMP Packet:')
-                print('Type: {}, Code: {}, Checksum: {}'.format(icmp_type, code, checksum))
-                print('Data:')
-                print(format_multi_line(data))
+                print('\t - ICMP Packet:')
+                print('\t\t - Type: {}, Code: {}, Checksum: {}'.format(icmp_type, code, checksum))
+                print('\t\t - Data:')
+                print(format_multi_line('\t\t\t   ', data))
 
 #  Extract data from frame
 def eth_frame(data):
@@ -91,3 +91,4 @@ def format_multi_line(prefix, string, size=80):
     return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
 
 main()
+
