@@ -13,6 +13,7 @@ IP Protocol ID's
 47 GRE  115 L2TP
 '''
 
+
 def main():
     connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux and vise versa
     while True:
@@ -69,6 +70,7 @@ def get_mac(byte_addr):
     byte_string = map('{:02x}'.format, byte_addr)  # Divide into chunks of two characters
     return ':'.join(byte_string).upper()  # Join values into a colon separated uppercase MAC
 
+
 #  Extract IPv4 packet
 def ip_packet(data):
     version_IHL = data[0]  # Grabs version and Head Length from IP Header
@@ -77,19 +79,23 @@ def ip_packet(data):
     ttl, protocol, source, target = struct.unpack('! 8x B B 2x 4s 4s', data[:20])  # Format data is packed into
     return version, IHL, ttl, protocol, ipv4(source), ipv4(target), data[IHL:]  # Data is everything after the header
 
+
 #  Return human readable IPv4
 def ipv4(raw_addr):
     return '.'.join(map(str, raw_addr))
+
 
 # Extract UDP packet
 def udp_segment(data):
     src_port, dest_port, size = struct.unpack('! H H 2x H', data[:8]) # grab first 8 bytes (header) of the UDP packet
     return src_port, dest_port, size, data[8:]
 
+
 # Extract ICMP (ping) packet
 def icmp_packet(data):
     icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header) of the ICMP packet
     return icmp_type, code, checksum, data[4:]  # Add data, everything after 4th byte
+
 
 # Extract TCP segment based on the TCP IP packet diagram
 def tcp_segment(data):
@@ -106,6 +112,7 @@ def tcp_segment(data):
 
     return (src_port, dest_port, sequence, acknowledgment, flag_urg,
             flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:])
+
 
 # Format multi line output
 def format_multi_line(prefix, string, size=80):
