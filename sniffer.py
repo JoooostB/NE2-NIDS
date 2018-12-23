@@ -66,9 +66,10 @@ def eth_frame(data):
 
 
 #  Return human readable mac
-def get_mac(byte_addr):
-    byte_string = map('{:02x}'.format, byte_addr)  # Divide into chunks of two characters
-    return ':'.join(byte_string).upper()  # Join values into a colon separated uppercase MAC
+def get_mac(bytes_addr):
+    byte_string = map('{:02x}'.format, bytes_addr)  # Divide into chunks of two characters
+    mac_addr = ':'.join(byte_string).upper()    # Join values into a colon separated uppercase MAC
+    return mac_addr
 
 
 #  Extract IPv4 packet
@@ -93,7 +94,7 @@ def udp_segment(data):
 
 # Extract ICMP (ping) packet
 def icmp_packet(data):
-    icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header) of the ICMP packet
+    icmp_type, code, checksum = struct.unpack('! B B H', data[:4])  # grab first 4 bytes (header) of the ICMP packet
     return icmp_type, code, checksum, data[4:]  # Add data, everything after 4th byte
 
 
@@ -123,5 +124,5 @@ def format_multi_line(prefix, string, size=80):
             size -= 1
     return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
 
-main()
 
+main()
