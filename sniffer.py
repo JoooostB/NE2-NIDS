@@ -1,6 +1,7 @@
 #!/usr/bin/sudo python
 import socket
 import struct
+import textwrap
 
 '''
 IP Protocol ID's
@@ -13,12 +14,25 @@ IP Protocol ID's
 '''
 
 def main():
-    connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux
+    connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux and vise versa
     while True:
-        raw, addr = connection.recvfrom(65536)  # Store to maximum buffer
+        raw, addr = connection.recvfrom(65536)  # Store to maximum buffer (65536)
         destination, source, protocol, data = eth_frame(raw)
         print('\nEthernet Frame:')
         print('Destination: {}, Source: {}, Protocol: {}'.format(destination, source, protocol, data)) # Fill placeholders {} with data
+
+        if protocol == 8:    # If protocol is IPv4
+            (version, IHL, ttl, protocol, source, target, data) = ip_packet(data)
+            print('IPv4 Packet:')
+            print('Version: {}, Header Length: {}, TTL: {}'.format(version, IHL, ttl))
+            print('Protocol: {}, Source: {}, Target: {}'.format(protocol, source, target))
+
+            if protocol == 1:
+                icmp_type, code, checksum, data = icmp_packet(data)
+                print('ICMP Packet:')
+                print('Type: {}, Code: {}, Checksum: {}'.format(icmp_type, code, checksum))
+                print('Data:')
+                print(format_multi_line(data))
 
 #  Extract data from frame
 def eth_frame(data):
@@ -43,9 +57,14 @@ def ip_packet(data):
 def ipv4(raw_addr):
     return '.'.join(map(str, raw_addr))
 
+# Extract UDP packet
+def udp_segment(data):
+    src_port, dest_port, size = struct.unpack('! H H 2x H', data[:8]) # grab first 8 bytes (header) of the UDP packet
+    return src_port, dest_port, size, data[8:]
+
 # Extract ICMP (ping) packet
 def icmp_packet(data):
-    icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header)
+    icmp_type, code, checksum = struct.unpack('! B B H', data [:4])  # grab first 4 bytes (header) of the ICMP packet
     return icmp_type, code, checksum, data[4:]  # Add data, everything after 4th byte
 
 # Extract TCP segment based on the TCP IP packet diagram
@@ -60,4 +79,15 @@ def tcp_segment(data):
     flag_syn = (offset_reserved_flags & 2) >> 1
     flag_fin = offset_reserved_flags & 1
     return src_port, dest_port, sequence, acknowledgement, offset_reserved_flags, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:]
+
+
+# Format multi line output
+def format_multi_line(prefix, string, size=80):
+    size -= len(prefix)
+    if isinstance(string, bytes):
+        string = ''.join(r'\x{:02x}'.format(byte) for byte in string)
+        if size % 2:
+            size -= 1
+    return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
+
 main()
