@@ -34,6 +34,30 @@ def main():
                 print('\t\t - Data:')
                 print(format_multi_line('\t\t\t   ', data))
 
+            elif protocol == 6:
+                (src_port, dest_port, sequence, acknowledgment, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data) = tcp_segment(data)
+                print('\t - TCP Segment:')
+                print('\t\t - Source Port: {}, Destination Port: {}'.format(src_port, dest_port))
+                print('\t\t - Sequence: {}, Acknowledgment: {}'.format(sequence, acknowledgment))
+                print('\t\t - Flags:')
+                print('\t\t\t -  URG: {}, ACK: {}, PSH: {}, RST: {}, SYN: {}, FIN:{}'.format(flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin))
+                print('\t\t - Data:')
+                print(format_multi_line('\t\t\t ', data))
+
+            elif protocol == 17:
+                src_port, dest_port, length, data = udp_segment(data)
+                print('\t - UDP Segment:')
+                print('\t\t - Source Port: {}, Destination Port: {}, Length: {}'.format(src_port, dest_port, length))
+
+            else:
+                print('\t - Data:')
+                print(format_multi_line('\t\t ', data))
+
+        else:
+            print('Data:')
+            print(format_multi_line('\t ', data))
+
+
 #  Extract data from frame
 def eth_frame(data):
     destination, source, protocol = struct.unpack('! 6s 6s H', data[:14])  # First 14 bytes from IP-packet. Source & Destination = 6, protocol is 2 bytes.
@@ -69,17 +93,19 @@ def icmp_packet(data):
 
 # Extract TCP segment based on the TCP IP packet diagram
 def tcp_segment(data):
-    (src_port, dest_port, sequence, acknowledgement, offset_reserved_flags) = struct.unpack('! H H H L L H', data[:14]) # First 96bits from a TCP/IP packet
-    offset = (offset_reserved_flags >> 12) * 4  # Push Reserved & TCP Flags out by bit shifting to filter offset out
-    # Create all possible flag types
+    (src_port, dest_port, sequence, acknowledgment,
+     offset_reserved_flags) = struct.unpack('! H H L L H', data[:14])
+
+    offset = (offset_reserved_flags >> 12) * 4
     flag_urg = (offset_reserved_flags & 32) >> 5
     flag_ack = (offset_reserved_flags & 16) >> 4
     flag_psh = (offset_reserved_flags & 8) >> 3
     flag_rst = (offset_reserved_flags & 4) >> 2
     flag_syn = (offset_reserved_flags & 2) >> 1
     flag_fin = offset_reserved_flags & 1
-    return src_port, dest_port, sequence, acknowledgement, offset_reserved_flags, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:]
 
+    return (src_port, dest_port, sequence, acknowledgment, flag_urg,
+            flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:])
 
 # Format multi line output
 def format_multi_line(prefix, string, size=80):
