@@ -23,10 +23,10 @@ def main():
         print('\t - Destination: {}, Source: {}, Protocol: {}'.format(destination, source, protocol, data)) # Fill placeholders {} with data
 
         if protocol == 8:    # If protocol is IPv4
-            (version, IHL, ttl, protocol, source, target, data) = ip_packet(data)
+            (version, IHL, ttl, protocol, source, destination, data) = ip_packet(data)
             print('IPv4 Packet:')
             print('\t\t - Version: {}, Header Length: {}, TTL: {}'.format(version, IHL, ttl))
-            print('\t\t - Protocol: {}, Source: {}, Target: {}'.format(protocol, source, target))
+            print('\t\t - Protocol: {}, Source: {}, Destination: {}'.format(protocol, source, destination))
 
             if protocol == 1:
                 icmp_type, code, checksum, data = icmp_packet(data)
@@ -77,8 +77,8 @@ def ip_packet(data):
     version_IHL = data[0]  # Grabs version and Head Length from IP Header
     version = version_IHL >> 4  # Bit shift 4 bits to remove IHL (add 4 zero's)
     IHL = (version_IHL & 15) * 4  # Get last 4 bits of first byte
-    ttl, protocol, source, target = struct.unpack('! 8x B B 2x 4s 4s', data[:20])  # Format data is packed into
-    return version, IHL, ttl, protocol, ipv4(source), ipv4(target), data[IHL:]  # Data is everything after the header
+    ttl, protocol, source, destination = struct.unpack('! 8x B B 2x 4s 4s', data[:20])  # Format data is packed into
+    return version, IHL, ttl, protocol, ipv4(source), ipv4(destination), data[IHL:]  # Data is everything after the header
 
 
 #  Return human readable IPv4
