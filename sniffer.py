@@ -3,6 +3,9 @@ import socket
 import struct
 import textwrap
 from db import DB
+import atexit
+import sys
+import os
 
 '''
 IP Protocol ID's
@@ -21,7 +24,7 @@ def main():
         (source, destination, protocol, version, IHL, ttl, ip_protocol, ip_source, ip_destination,
          icmp_type, icmp_code, icmp_checksum, icmp_data, udp_src_port, udp_dest_port, udp_length,
          tcp_sequence, tcp_acknowledgment, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data) = \
-            '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''
+            '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'
 
         db = DB()
         raw, addr = connection.recvfrom(65536)  # Store to maximum buffer (65536)
@@ -134,4 +137,13 @@ def format_multi_line(prefix, string, size=80):
     return '\n'.join([prefix + line for line in textwrap.wrap(string, size)])
 
 
-main()
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        db = DB()
+        db.clear()
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
