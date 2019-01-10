@@ -34,16 +34,17 @@ class DB(object):
         return self.cursor.execute(query)
 
     def add_frame(self, src_mac, dest_mac, protocol, version, header_length, ttl, ip_protocol, src_ip, dest_ip,
-                  udp_src_port, udp_dest_port, udp_length, sequence, acknowledgement, flag_urg, flag_ack,
-                  flag_psh, flag_rst, flag_syn, flag_fin, data):
-        query = """INSERT INTO `sniffer` 
-        ('id', 'time', 'src_mac', 'dest_mac', 'protocol', 'version', 'header_length', 'ttl', 'ip_protocol',
-        'src_ip', 'dest_ip', 'icmp_type', 'icmp_code', 'icmp_checksum', 'icmp_data', 'udp_src_port', 'udp_dest_port', 
-        'udp_length', 'sequence', 'acknowledgement', 'flag_urg',
-        'flag_ack', 'flag_psh', 'flag_rst', 'flag_syn', 'flag_fin', 'data') VALUES (NULL, current_timestamp(),
-        src_mac, dest_mac, protocol, version, header_length, ttl, ip_protocol, src_ip, dest_ip, icmp_type, icmp_code, 
-        icmp_checksum, icmp_data, udp_src_port, udp_dest_port, udp_length, sequence, acknowledgement, flag_urg, 
-        flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data);
+                  icmp_type, icmp_code, icmp_checksum, icmp_data, udp_src_port, udp_dest_port, udp_length,
+                  sequence, acknowledgement, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data):
+        query = """
+        INSERT INTO `sniffer` (`id`, `time`, `src_mac`, `dest_mac`, `protocol`, `version`, `header_length`, `ttl`, 
+        `ip_protocol`, `src_ip`, `dest_ip`, `icmp_type`, `icmp_code`, `icmp_checksum`, `icmp_data`, `udp_src_port`, 
+        `udp_dest_port`, `udp_length`, `sequence`, `acknowledgement`, `flag_urg`, `flag_ack`, `flag_psh`, `flag_rst`, 
+        `flag_syn`, `flag_fin`, `data`) 
+        VALUES (NULL, current_timestamp(), src_mac, dest_mac, protocol, version, header_length, ttl, ip_protocol, 
+        src_ip, dest_ip, icmp_type, icmp_code, icmp_checksum, icmp_data, udp_src_port, udp_dest_port, udp_length, 
+        sequence, acknowledgement, flag_urg, flag_ack, 
+        flag_psh, flag_rst, flag_syn, flag_fin, data);
         """
         return self.cursor.execute(query)
 
