@@ -1,5 +1,18 @@
 # Network Engineering 2
 For the NE2 course we we're given the assignment to build a Network Intrusion Detection System (IDS) from scratch in Python.
+## Setup
+1. Create database
+2. Create table
+    ```mariadb
+    CREATE TABLE `ne2-nids`.`sniffer` 
+    ( `id` INT NOT NULL AUTO_INCREMENT , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    `src_mac` VARCHAR NOT NULL , `dest_mac` VARCHAR NOT NULL , `protocol` INT NOT NULL , `version` INT NOT NULL ,
+    `header_length` INT NOT NULL , `ttl` INT NOT NULL , `ip_protocol` INT NOT NULL , `src_ip` VARCHAR NOT NULL , 
+    `dest_ip` VARCHAR NOT NULL , `udp_src_port` INT NOT NULL , `udp_dest_port` INT NOT NULL , `udp_length` INT NOT NULL , 
+    `data` MEDIUMTEXT NOT NULL , PRIMARY KEY (`id`(14))) ENGINE = InnoDB;
+    ``` 
+3. Edit configuration in db.py accordingly
+   
 ## Requirements
 ### Detector running on Windows, Mac, Linux or Rpi:
 
