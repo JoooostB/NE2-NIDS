@@ -9,9 +9,10 @@ database = "ne2-nids"
 #
 # INSERT INTO `sniffer`
 # (`id`, `time`, `src_mac`, `dest_mac`, `protocol`, `version`, `header_length`, `ttl`, `ip_protocol`,
-# `src_ip`, `dest_ip`, `udp_src_port`, `udp_dest_port`, `udp_length`, `data`) VALUES (NULL, current_timestamp(),
+# `src_ip`, `dest_ip`, `udp_src_port`, `udp_dest_port`, `udp_length`, `sequence`, `acknowledgement`, `flag_urg`,
+# `flag_ack`, `flag_psh`, `flag_rst`, `flag_syn`, `flag_fin`, `data`) VALUES (NULL, current_timestamp(),
 # 'FC:EC:DA:03:B7:85', '01:00:5E:00:00:FB', '8', '4', '20', '1', '17', '192.168.1.1', '224.0.0.251', '5353',
-# '5353', '39552', '');
+# '5353', '39552', '', '', '', '', '', '', '', '', '');
 #
 
 
