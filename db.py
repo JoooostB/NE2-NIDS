@@ -1,9 +1,9 @@
 import mysql.connector
 
-host="localhost"
-user="root"
-passwd="appelflap"
-database="ne2-nids"
+host = "localhost"
+user = "root"
+passwd = "appelflap"
+database = "ne2-nids"
 
 # Inserting data to the database should follow the following structure:
 #
