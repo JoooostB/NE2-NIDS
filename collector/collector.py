@@ -4,17 +4,14 @@ from models import Database
 
 app = Flask(__name__)
 
-host = "172.19.0.2"
-user = "root"
-passwd = "appelflap"
-database = "collector"
+dbHandler = Database()
 
 
 @app.route('/', methods=['GET'])
 def hello():
     if request.method == 'GET':
         print("get all packets from db")
-        dbHandler = Database()
+
         all_packets = dbHandler.list_packets()
 
         print("all packets from db are = ", all_packets)

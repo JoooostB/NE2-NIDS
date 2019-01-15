@@ -5,6 +5,11 @@ services:
     build: .
     ports:
       - "5000:5000"
+    networks:
+      - ne2_nids
+    depends_on:
+      - db
+    restart: on-failure
 
   db:
     image: mysql:latest
@@ -19,13 +24,13 @@ services:
       MYSQL_ROOT_PASSWORD: appelflap
     volumes:
       - ./collector/mysql:/docker-entrypoint-initdb.d
-    links:
-      - collector:collector
+    networks:
+      ne2_nids:
+        aliases:
+          - db
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    links:
-      - db:db
     ports:
       - 8080:80
     environment:
@@ -33,3 +38,8 @@ services:
       MYSQL_USER: ne2_admin
       MYSQL_PASSWORD: appelflap
       MYSQL_ROOT_PASSWORD: appelflap
+    networks:
+      - ne2_nids
+
+networks:
+  ne2_nids:
