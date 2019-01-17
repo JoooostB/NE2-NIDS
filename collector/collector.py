@@ -1,7 +1,6 @@
 from flask import Flask, request
 from flask import render_template
 from models import Database
-
 app = Flask(__name__)
 
 dbHandler = Database()
@@ -11,11 +10,8 @@ dbHandler = Database()
 def hello():
     if request.method == 'GET':
         print("get all packets from db")
-
         all_packets = dbHandler.list_packets()
-
         print("all packets from db are = ", all_packets)
-
         return render_template('index.html', all_packets=all_packets)
 
 

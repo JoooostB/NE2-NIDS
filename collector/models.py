@@ -1,8 +1,9 @@
 import mysql.connector
 host = "db"
-user = "ne2-nids"
+user = "root"
 passwd = "appelflap"
 database = "collector"
+
 
 class Database(object):
     """This class is responsible for setting up a connection to the database and executing simple queries."""
@@ -20,8 +21,7 @@ class Database(object):
 
     def list_packets(self):
         self.cursor.execute("SELECT protocol, src_address, bytes, packets, date FROM collector")
-        result = self.cur.fetchall()
-        self.conn.close()
+        result = self.cursor.fetchall()
         return result
 
     def clear(self):
