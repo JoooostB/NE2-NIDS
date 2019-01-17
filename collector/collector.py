@@ -8,6 +8,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def hello():
     if request.method == 'GET':
+        dbHandler = Database()
         print("get all packets from db")
         all_packets = dbHandler.list_packets()
         print("all packets from db are = ", all_packets)
