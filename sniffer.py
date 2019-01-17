@@ -3,9 +3,9 @@ import socket
 import struct
 import textwrap
 from collector.models import Database as DB
-import atexit
 import sys
 import os
+import json, requests
 
 '''
 IP Protocol ID's
@@ -26,7 +26,6 @@ def main():
          tcp_sequence, tcp_acknowledgment, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data) = \
             '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'
 
-        db = DB()
         raw, addr = connection.recvfrom(65536)  # Store to maximum buffer (65536)
         destination, source, protocol, data = eth_frame(raw)
         print('\nEthernet Frame:')
@@ -67,7 +66,24 @@ def main():
             print('Data:')
             print(format_multi_line('\t ', data))
 
-        # Insert POST-request here @Sander
+        # POST-request to send to collector
+
+        dict_to_send = {'packet':
+                        {'ip': ip_source,
+                         'protocol': ip_protocol,
+                         'bytes': udp_length
+                         }
+                        }
+
+        # Url
+        url = "http://localhost:5000/insert_packet"
+
+        # Send request
+        res = requests.post(url, data=json.dumps(dict_to_send))
+
+        # Get response
+        dict_from_server = res.json()
+        print("response from server:", dict_from_server)
 
 
 #  Extract data from frame
