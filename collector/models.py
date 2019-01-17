@@ -1,6 +1,6 @@
 import mysql.connector
 
-host = "localhost"
+host = "db"
 user = "root"
 passwd = "appelflap"
 database = "collector"
