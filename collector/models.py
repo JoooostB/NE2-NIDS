@@ -1,4 +1,5 @@
 import mysql.connector
+
 host = "db"
 user = "root"
 passwd = "appelflap"
@@ -8,8 +9,7 @@ database = "collector"
 class Database(object):
     """This class is responsible for setting up a connection to the database and executing simple queries."""
     def __init__(self):
-
-      self.con = mysql.connector.connect(user='ne2_admin',
+        self.con = mysql.connector.connect(user='ne2_admin',
                                            password='appelflap',
                                            host='localhost',
                                            database='collector')
