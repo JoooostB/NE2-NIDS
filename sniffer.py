@@ -1,11 +1,13 @@
 #!/usr/bin/sudo python
+import json
+import os
+import requests
 import socket
 import struct
-import textwrap
-from collector.models import Database as DB
 import sys
-import os
-import json, requests
+import textwrap
+
+from collector.models import Database as DB
 
 '''
 IP Protocol ID's
