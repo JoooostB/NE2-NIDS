@@ -2,7 +2,7 @@
 import socket
 import struct
 import textwrap
-from db import DB
+from collector.models import Database as DB
 import atexit
 import sys
 import os
