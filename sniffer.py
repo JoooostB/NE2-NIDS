@@ -66,9 +66,8 @@ def main():
         else:
             print('Data:')
             print(format_multi_line('\t ', data))
-        db.add_frame(source, destination, protocol, version, IHL, ttl, ip_protocol, ip_source, ip_destination,
-                     icmp_type, icmp_code, icmp_checksum, icmp_data, udp_src_port, udp_dest_port, udp_length,
-                     tcp_sequence, tcp_acknowledgment, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data)
+
+        # Insert POST-request here @Sander
 
 
 #  Extract data from frame
