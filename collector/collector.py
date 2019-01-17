@@ -1,20 +1,19 @@
 from flask import Flask, request, jsonify
 from flask import render_template
 from models import Database
-
 app = Flask(__name__)
 
 
 @app.route('/', methods=['GET'])
 def hello():
     if request.method == 'GET':
+        dbHandler = Database()
         print("get all packets from db")
 
         dbHandler = Database()
+
         all_packets = dbHandler.list_packets()
-
         print("all packets from db are = ", all_packets)
-
         return render_template('index.html', all_packets=all_packets)
 
 
