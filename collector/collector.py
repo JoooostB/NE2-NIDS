@@ -3,7 +3,6 @@ from flask import render_template
 from models import Database
 app = Flask(__name__)
 
-dbHandler = Database()
 
 
 @app.route('/', methods=['GET'])
@@ -18,6 +17,7 @@ def hello():
 @app.route('/insert_db', methods=['POST'])
 def insert_db():
     if request.method == 'POST':
+        dbHandler = Database()
         return render_template('index.html')
 
 
