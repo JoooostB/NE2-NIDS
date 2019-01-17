@@ -7,7 +7,7 @@ import struct
 import sys
 import textwrap
 
-from collector.models import Database as DB
+
 
 '''
 IP Protocol ID's
@@ -70,10 +70,13 @@ def main():
 
         # POST-request to send to collector
 
+        packet_size = sys.getsizeof(data)
+        packet_protocol = protocol_to_text(ip_protocol)
+
         dict_to_send = {'packet':
                         {'ip': ip_source,
-                         'protocol': ip_protocol,
-                         'bytes': udp_length
+                         'protocol': packet_protocol,
+                         'bytes': packet_size
                          }
                         }
 
@@ -86,6 +89,16 @@ def main():
         # Get response
         dict_from_server = res.json()
         print("response from server:", dict_from_server)
+
+
+def protocol_to_text(ip_protocol):
+    if ip_protocol == 6:
+        ip_protocol = "TCP"
+    elif ip_protocol == 17:
+        ip_protocol = "UDP"
+    elif ip_protocol == 1:
+        ip_protocol = "ICMP"
+    return ip_protocol
 
 
 #  Extract data from frame
@@ -158,8 +171,6 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        db = DB()
-        db.clear()
         try:
             sys.exit(0)
         except SystemExit:
