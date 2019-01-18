@@ -5,6 +5,9 @@ from models import Database
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
+# Making it a bit more secure by just pasting some random text
+app.config['SECRET_KEY'] = 'XvCi0eB7AdM3R3MIMTtK18Yc77TibvBc'
+socketio = SocketIO(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -110,4 +113,5 @@ def insert_db():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app)
+    #app.run(host='0.0.0.0', port=5000, debug=True)
