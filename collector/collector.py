@@ -2,11 +2,41 @@ import datetime
 from flask import Flask, request, jsonify, render_template
 from models import Database
 from flask_socketio import SocketIO, emit
-import time
+from time import sleep
+from threading import Thread, Event
+
+
 app = Flask(__name__)
 # Making it a bit more secure by just pasting some random text
 app.config['SECRET_KEY'] = 'XvCi0eB7AdM3R3MIMTtK18Yc77TibvBc'
 socketio = SocketIO(app)
+
+# Database thread
+thread = Thread()
+thread_stop_event = Event()
+
+
+class DbThread(Thread):
+    def __init__(self):
+        self.delay = 1
+        super(DbThread, self).__init__()
+
+    def last_db_packet(self):
+        """
+        Query last row of database on it's own thread
+        """
+        # infinite loop of db queries
+        print("Start query on thread")
+        while not thread_stop_event.isSet():
+            db = Database()
+            latest_packet = str(db.latest_packet())
+            print(latest_packet)
+            emit('packet', {'data': latest_packet})
+            sleep(self.delay)
+
+    def run(self):
+        sleep(self.delay)
+        self.last_db_packet()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -90,10 +120,13 @@ def status():
 
 @socketio.on('connect')
 def connected():
-    time.sleep(1)
-    emit('connect', {'data': 'Connected!'})
-    #emit('connect', 'Status: connected.')
+    global thread
     print('Client connected')
+    if not thread.isAlive():
+        print("Starting Thread")
+        emit('connect', {'data': 'Connected!'})
+        thread = DbThread()
+        thread.start()
 
 
 @socketio.on('disconnect')
@@ -104,11 +137,6 @@ def disconnect():
 
 @socketio.on('message')
 def handle_json(message):
-    if message['data'] == 'connected':
-        db = Database()
-        latest_packet = db.latest_packet()
-        print(latest_packet)
-        emit('packet', str(latest_packet))
     print(message['data'])
 
 
