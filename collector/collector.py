@@ -2,13 +2,43 @@ import datetime
 
 from flask import Flask, request, jsonify, render_template
 from models import Database
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
+from threading import Thread, Event
+from random import random
+from time import sleep
 
 app = Flask(__name__)
 # Making it a bit more secure by just pasting some random text
 app.config['SECRET_KEY'] = 'XvCi0eB7AdM3R3MIMTtK18Yc77TibvBc'
 socketio = SocketIO(app)
 
+thread = Thread()
+thread_stop_event = Event()
+
+
+class ResponseThread(Thread):
+    def __init__(self):
+        self.delay = 1
+        super(ResponseThread, self).__init__()
+
+    def randomNumberGenerator(self):
+        """
+        Generate a random number every 1 second and emit to a socketio instance (broadcast)
+        Ideally to be run in a separate thread?
+        """
+        #infinite loop of magical random numbers
+        print("Making random numbers")
+        while not thread_stop_event.isSet():
+            db = Database()
+            last_packet = str(db.last_packet())
+            socketio.emit('response', {'number': last_packet}, broadcast=True)
+            print(last_packet)
+
+    def to_live_view(self, packet):
+        socketio.emit('response', {'number': packet}, broadcast=True)
+
+    def run(self):
+        self.randomNumberGenerator()
 
 @app.route('/', methods=['GET', 'POST'])
 def status():
@@ -110,6 +140,17 @@ def insert_db():
         dict_to_return = {"Status": "packet inserted"}
 
         return jsonify(dict_to_return)
+
+
+@socketio.on('connected')
+def on_connect(message):
+    global thread
+    print(message['data'])
+
+    if not thread.isAlive():
+        print("Starting Thread")
+        thread = ResponseThread()
+        thread.start()
 
 
 if __name__ == "__main__":

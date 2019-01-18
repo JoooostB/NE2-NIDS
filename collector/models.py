@@ -25,6 +25,11 @@ class Database(object):
         result = self.cursor.fetchall()
         return result
 
+    def last_packet(self):
+        self.cursor.execute("SELECT protocol, src_address, bytes, packets, date FROM collector ORDER BY `id` DESC LIMIT 1")
+        result = self.cursor.fetchall()
+        return result
+
     def insert_packet(self, packet_protocol, packet_ip, packet_bytes):
         print("inserting packet in db")
         self.cursor.execute("INSERT INTO collector (protocol, src_address, bytes) VALUES (%s, %s, %s)",
@@ -38,6 +43,9 @@ class Database(object):
                             (filter_protocol, filter_start_time, filter_end_time,))
         result = self.cursor.fetchall()
         return result
+
+    def close(self):
+        self.conn.close()
 
     def __del__(self):
         self.conn.close()
