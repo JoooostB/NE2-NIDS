@@ -61,87 +61,86 @@
 </div>
 
 {% if filter_result %}
-    <div class="container">
-        <div class="col-sm">
-            <h3>Filter results</h3>
-            <table cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                    <td>
+<div class="container">
+    <div class="col-sm">
+        <h3>Filter results</h3>
+        <table cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td>
+                    <table cellspacing="0" cellpadding="1" width="100%">
+                        <tr style="color:white;background-color:black">
+                            <th width="20%">Protocol</th>
+                            <th width="20%">Address</th>
+                            <th width="20%">Bytes</th>
+                            <th width="20%">Packets</th>
+                            <th width="20%">Date</th>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width:100%; height:300px; overflow:auto;">
                         <table cellspacing="0" cellpadding="1" width="100%">
-                            <tr style="color:white;background-color:black">
-                                <th width="20%">Protocol</th>
-                                <th width="20%">Address</th>
-                                <th width="20%">Bytes</th>
-                                <th width="20%">Packets</th>
-                                <th width="20%">Date</th>
+                            {% for row in filter_result %}
+                            <tr>
+                                <td width="20%"> {{ row[0] }}</td>
+                                <td width="20%"> {{ row[1] }}</td>
+                                <td width="20%"> {{ row[2] }}</td>
+                                <td width="20%"> {{ row[3] }}</td>
+                                <td width="20%"> {{ row[4] }}</td>
                             </tr>
+                            {% endfor %}
                         </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="width:100%; height:300px; overflow:auto;">
-                            <table cellspacing="0" cellpadding="1" width="100%">
-                                {% for row in filter_result %}
-                                    <tr>
-                                        <td width="20%"> {{ row[0] }}</td>
-                                        <td width="20%"> {{ row[1] }}</td>
-                                        <td width="20%"> {{ row[2] }}</td>
-                                        <td width="20%"> {{ row[3] }}</td>
-                                        <td width="20%"> {{ row[4] }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
+</div>
 {% endif %}
 
 <br>
 
 {% if all_packets %}
-    <div class="container">
-        <div class="col-sm">
-            <h3>Live view</h3>
-            <table cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                    <td>
+<div class="container">
+    <div class="col-sm">
+        <h3>Live view</h3>
+        <table cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td>
+                    <table cellspacing="0" cellpadding="1" width="100%">
+                        <tr style="color:white;background-color:black">
+                            <th width="20%">Protocol</th>
+                            <th width="20%">Address</th>
+                            <th width="20%">Bytes</th>
+                            <th width="20%">Packets</th>
+                            <th width="20%">Date</th>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="width:100%; height: 500px; overflow:auto;">
                         <table cellspacing="0" cellpadding="1" width="100%">
-                            <tr style="color:white;background-color:black">
-                                <th width="20%">Protocol</th>
-                                <th width="20%">Address</th>
-                                <th width="20%">Bytes</th>
-                                <th width="20%">Packets</th>
-                                <th width="20%">Date</th>
+                            {% for row in all_packets %}
+                            <tr>
+                                <td width="20%"> {{ row[0] }}</td>
+                                <td width="20%"> {{ row[1] }}</td>
+                                <td width="20%"> {{ row[2] }}</td>
+                                <td width="20%"> {{ row[3] }}</td>
+                                <td width="20%"> {{ row[4] }}</td>
                             </tr>
+                            {% endfor %}
                         </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="width:100%; height: 500px; overflow:auto;">
-                            <table cellspacing="0" cellpadding="1" width="100%">
-                                {% for row in all_packets %}
-                                    <tr>
-                                        <td width="20%"> {{ row[0] }}</td>
-                                        <td width="20%"> {{ row[1] }}</td>
-                                        <td width="20%"> {{ row[2] }}</td>
-                                        <td width="20%"> {{ row[3] }}</td>
-                                        <td width="20%"> {{ row[4] }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
+</div>
 {% endif %}
-
 
 
 <!-- Optional JavaScript -->

@@ -1,7 +1,6 @@
 import datetime
 
-from flask import Flask, request, jsonify
-from flask import render_template
+from flask import Flask, request, jsonify, render_template
 from models import Database
 
 app = Flask(__name__)
