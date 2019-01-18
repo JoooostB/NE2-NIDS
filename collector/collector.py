@@ -2,6 +2,7 @@ import datetime
 
 from flask import Flask, request, jsonify, render_template
 from models import Database
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 
