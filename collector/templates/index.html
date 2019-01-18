@@ -9,38 +9,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        const socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('connect', function () {
-            socket.emit('message', {data: 'connected'});
-        });
-        socket.on('connect', function (msg) {
-            if (msg) {
-                window.console && console.log(msg.data);
-                $("#MyEdit").html(msg.data);
-            }
-            else {
-               $("#MyEdit").html('Not connected');
-            }
-        });
-        socket.on('packet', function(latest_packet) {
-            if (latest_packet) {
-                window.console && console.log(latest_packet);
-            }
-        })
-
-    </script>
     <title>NE2 Collector</title>
 
 </head>
 <body>
 
 <div class="container">
-    <h1>Network collector</h1>
-    <h3 id="MyEdit">Status: connecting.</h3>
-
     <div class="col-sm">
+        <h1>Hello, dit wordt onze collector pagina!</h1>
 
         <!-- {{ all_packets }} raw data -->
     </div>
