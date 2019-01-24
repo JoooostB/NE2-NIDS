@@ -17,6 +17,7 @@ def status():
         print("all packets from db are = ", all_packets)
 
         now = datetime.datetime.now().replace(microsecond=0)
+        now = now + datetime.timedelta(hours=1)
 
         filter_settings = request.form
 
