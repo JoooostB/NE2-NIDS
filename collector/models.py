@@ -25,10 +25,10 @@ class Database(object):
         result = self.cursor.fetchall()
         return result
 
-    def insert_packet(self, packet_protocol, packet_ip, packet_bytes):
+    def insert_packet(self, hostname, packet_protocol, packet_ip, packet_bytes):
         print("inserting packet in db")
-        self.cursor.execute("INSERT INTO collector (protocol, src_address, bytes) VALUES (%s, %s, %s)",
-                         (packet_protocol, packet_ip, packet_bytes))
+        self.cursor.execute("INSERT INTO collector (hostname, protocol, src_address, bytes) VALUES (%s, %s, %s, %s)",
+                         (hostname, packet_protocol, packet_ip, packet_bytes))
         self.conn.commit()
 
     def get_detectors(self):

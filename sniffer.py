@@ -19,6 +19,8 @@ IP Protocol ID's
 47 GRE  115 L2TP
 '''
 
+hostname = socket.gethostname()
+
 
 def main():
     connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))  # Change AF_INET to AF_PACKET when running under Linux and vise versa
@@ -69,12 +71,12 @@ def main():
             print(format_multi_line('\t ', data))
 
         # POST-request to send to collector
-
         packet_size = sys.getsizeof(data)
         packet_protocol = protocol_to_text(ip_protocol)
 
         dict_to_send = {'packet':
-                        {'ip': ip_source,
+                        {'hostname': hostname,
+                         'ip': ip_source,
                          'protocol': packet_protocol,
                          'bytes': packet_size
                          }
