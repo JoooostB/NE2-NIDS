@@ -93,7 +93,7 @@ def insert_db():
         packet = request.get_json(force=True)
 
         print("packet is = ", packet)
-
+        packet_hostname = packet['packet']['hostname']
         packet_ip = packet['packet']['ip']
         packet_protocol = packet['packet']['protocol']
         packet_bytes = packet['packet']['bytes']
@@ -103,7 +103,7 @@ def insert_db():
         print("packet bytes is = ", packet_bytes)
 
         dbHandler = Database()
-        dbHandler.insert_packet(packet_protocol, packet_ip, packet_bytes)
+        dbHandler.insert_packet(packet_hostname, packet_protocol, packet_ip, packet_bytes)
 
         dict_to_return = {"Status": "packet inserted"}
 

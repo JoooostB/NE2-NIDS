@@ -1,5 +1,6 @@
 CREATE TABLE `collector` (
  `id` int(8) NOT NULL AUTO_INCREMENT,
+ `hostname` varchar(255) NOT NULL,
  `protocol` varchar(4) NOT NULL,
  `src_address` varchar(128) NOT NULL,
  `bytes` int(10) NOT NULL,
