@@ -40,6 +40,14 @@
                 </div>
             </div>
             <div class="col-sm">
+                <h5><strong>Select detector</strong></h5>
+                <select>
+                    {%  for detector in detectors %}
+                    <option value="detector">{{ detector }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm">
                 <h5><strong>Select Time</strong></h5>
                 <p><input type="datetime-local" name="start_time" value={{ now }}>
                     = Start-time
@@ -47,7 +55,6 @@
                 <p><input type="datetime-local" name="end_time" value={{ now }}>
                     = End-time
                 </p>
-
             </div>
             <div class="col-sm">
                 <br>

@@ -31,6 +31,12 @@ class Database(object):
                          (packet_protocol, packet_ip, packet_bytes))
         self.conn.commit()
 
+    def get_detectors(self):
+        print("get detectors from db")
+        self.cursor.execute("SELECT DISTINCT hostname from collector")
+        result = self.cursor.fetchall()
+        return result
+
     def filter_db(self, filter_protocol, filter_start_time, filter_end_time):
         print("applying filter with the following items", filter_protocol, filter_start_time, filter_end_time)
         self.cursor.execute("SELECT protocol, src_address, bytes, packets, date FROM `collector` "

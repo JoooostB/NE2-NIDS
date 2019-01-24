@@ -19,11 +19,9 @@ def status():
         now = datetime.datetime.now().replace(microsecond=0)
         now = now + datetime.timedelta(hours=1)
 
-        filter_settings = request.form
+        detectors = dbHandler.get_detectors()
 
-        print("Filter settings are = ", filter_settings)
-
-        return render_template('index.html', all_packets=all_packets, now=now.isoformat())
+        return render_template('index.html', all_packets=all_packets, detectors=detectors, now=now.isoformat())
 
     if request.method == 'POST':
         filter_settings = request.form
