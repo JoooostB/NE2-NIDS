@@ -20,11 +20,14 @@ def status():
         now = now + datetime.timedelta(hours=1)
 
         detectors = dbHandler.get_detectors()
+        print("detector list is", detectors)
 
         return render_template('index.html', all_packets=all_packets, detectors=detectors, now=now.isoformat())
 
     if request.method == 'POST':
         filter_settings = request.form
+
+        print("request form raw", request.form)
 
         if filter_settings['start_time']:
             filter_start_time = filter_settings['start_time']
@@ -39,6 +42,7 @@ def status():
         else:
             print("filter end_time = empty = ")
             filter_end_time = datetime.datetime.utcnow().replace(microsecond=0)
+            filter_end_time = filter_end_time + datetime.timedelta(hours=1)
 
         filter_protocol = []
         if 'protocol_tcp' in filter_settings:
@@ -63,12 +67,24 @@ def status():
             filter_protocol = '|'.join(filter_protocol)
         else:
             filter_protocol = "TCP|UDP|ICMP"
+
+        if 'hostname' in filter_settings:
+            if filter_settings['hostname'] == "all":
+                filter_hostname = "%"
+                print("filter_hostname =", filter_hostname)
+            else:
+                filter_hostname = filter_settings['hostname']
+                print("filter_hostname =", filter_hostname)
+        else:
+            print("filter_hostname is empty")
+
         print("protocol is", filter_protocol)
+        print("hostname is", filter_hostname)
         print("start time is", filter_start_time)
         print("end time is", filter_end_time)
 
         dbHandler = Database()
-        filter_result = dbHandler.filter_db(filter_protocol, filter_start_time, filter_end_time)
+        filter_result = dbHandler.filter_db(filter_protocol, filter_hostname, filter_start_time, filter_end_time)
 
         print("print result = ", filter_result)
 
@@ -76,13 +92,16 @@ def status():
         print("all packets from db are = ", all_packets)
 
         now = datetime.datetime.now().replace(microsecond=0)
-        print("now is het volgende ")
+        now = now + datetime.timedelta(hours=1)
+        print("now is het volgende", now)
+
+        detectors = dbHandler.get_detectors()
 
         filter_settings = request.form
 
         print("Filter settings are = ", filter_settings)
 
-        return render_template('index.html', all_packets=all_packets, now=now.isoformat(), filter_result=filter_result)
+        return render_template('index.html', all_packets=all_packets, detectors=detectors, now=now.isoformat(), filter_result=filter_result)
 
 
 @app.route('/insert_packet', methods=['POST'])

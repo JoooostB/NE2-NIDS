@@ -1,6 +1,6 @@
 import mysql.connector
 
-host = "db"
+host = "localhost"
 user = "root"
 passwd = "appelflap"
 database = "collector"
@@ -28,7 +28,7 @@ class Database(object):
     def insert_packet(self, hostname, packet_protocol, packet_ip, packet_bytes):
         print("inserting packet in db")
         self.cursor.execute("INSERT INTO collector (hostname, protocol, src_address, bytes) VALUES (%s, %s, %s, %s)",
-                         (hostname, packet_protocol, packet_ip, packet_bytes))
+                            (hostname, packet_protocol, packet_ip, packet_bytes))
         self.conn.commit()
 
     def get_detectors(self):
@@ -37,11 +37,11 @@ class Database(object):
         result = self.cursor.fetchall()
         return result
 
-    def filter_db(self, filter_protocol, filter_start_time, filter_end_time):
-        print("applying filter with the following items", filter_protocol, filter_start_time, filter_end_time)
-        self.cursor.execute("SELECT protocol, src_address, bytes, packets, date FROM `collector` "
-                            "WHERE `protocol` REGEXP %s AND `date` BETWEEN %s AND %s ORDER BY `date` DESC",
-                            (filter_protocol, filter_start_time, filter_end_time,))
+    def filter_db(self, filter_protocol, detector, filter_start_time, filter_end_time):
+        print("applying filter with the following items", filter_protocol, detector, filter_start_time, filter_end_time)
+        self.cursor.execute("SELECT hostname, protocol, src_address, bytes, packets, date FROM `collector` "
+                            "WHERE `protocol` REGEXP %s AND `hostname` LIKE %s AND `date` BETWEEN %s AND %s ORDER BY `date` DESC",
+                            (filter_protocol, detector, filter_start_time, filter_end_time,))
         result = self.cursor.fetchall()
         return result
 

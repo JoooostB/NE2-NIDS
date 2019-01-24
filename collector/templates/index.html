@@ -41,9 +41,10 @@
             </div>
             <div class="col-sm">
                 <h5><strong>Select detector</strong></h5>
-                <select>
-                    {%  for detector in detectors %}
-                    <option value="detector">{{ detector }}</option>
+                <select name="hostname">
+                <option value="all">All</option>
+                    {% for detector in detectors %}
+                        <option value={{ detector[0] }}>{{ detector[0] }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -76,10 +77,11 @@
                     <td>
                         <table cellspacing="0" cellpadding="1" width="100%">
                             <tr style="color:white;background-color:black">
+                                <th width="20%">Detector</th>
                                 <th width="20%">Protocol</th>
                                 <th width="20%">Address</th>
-                                <th width="20%">Bytes</th>
-                                <th width="20%">Packets</th>
+                                <th width="10%">Bytes</th>
+                                <th width="10%">Packets</th>
                                 <th width="20%">Date</th>
                             </tr>
                         </table>
@@ -94,8 +96,9 @@
                                         <td width="20%"> {{ row[0] }}</td>
                                         <td width="20%"> {{ row[1] }}</td>
                                         <td width="20%"> {{ row[2] }}</td>
-                                        <td width="20%"> {{ row[3] }}</td>
-                                        <td width="20%"> {{ row[4] }}</td>
+                                        <td width="10%"> {{ row[3] }}</td>
+                                        <td width="10%"> {{ row[4] }}</td>
+                                        <td width="20%"> {{ row[5] }}</td>
                                     </tr>
                                 {% endfor %}
                             </table>
